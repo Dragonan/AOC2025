@@ -4,7 +4,7 @@ var timer = new System.Diagnostics.Stopwatch();
 timer.Start();
 
 
-//Day1.Solve();
+Day01.Solve();
 
 
 timer.Stop();
