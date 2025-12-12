@@ -7,7 +7,7 @@ public static class Day01
         SolvePart2();
     }
 
-    public static void SolvePart1()
+    private static void SolvePart1()
     {
         var dial = 50;
         var rotations = PuzzleInput.Input;
@@ -27,7 +27,7 @@ public static class Day01
         Console.WriteLine("Password: " + zeroCount);
     }
 
-    public static void SolvePart2()
+    private static void SolvePart2()
     {
         
         var dial = 50;
