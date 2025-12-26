@@ -23,28 +23,4 @@ public static class CustomExtensions
         return point.X >= lengthX || 0 > point.X ||
             point.Y >= lengthY || 0 > point.Y;
     }
-
-    public static Point Move(this Point point, Directions dir)
-    {
-        return new Point(
-            point.X + (dir == Directions.Left ? -1 : (dir == Directions.Right ? 1 : 0)),
-            point.Y + (dir == Directions.Up ? -1 : (dir == Directions.Down ? 1 : 0)));
-    }
-
-    public static int Length(this ulong n)
-    {
-        return n == 0 ? 1 : ((int)Math.Log10(n) + 1);
-    }
-
-    public static Directions Opposite(this Directions dir)
-    {
-        switch (dir)
-        {
-            case Directions.Up: return Directions.Down;
-            case Directions.Down: return Directions.Up;
-            case Directions.Left: return Directions.Right;
-            case Directions.Right: return Directions.Left;
-            default: return Directions.Up;
-        }
-    }
 }
