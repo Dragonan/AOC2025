@@ -89,44 +89,41 @@ public static class Day12
     {
         foreach (var present in presentsToAdd)
         {
-            for (int i = 0; i < present.Copies; i++)
+            var offset = new Point(0, 0);
+            var pos = 0;
+            while (true)
             {
-                var offset = new Point(0, 0);
-                var pos = 0;
-                while (true)
+                var space = FindSpaceForPresent(present.Present, area, offset, pos);
+                if (space == null)
+                    return false;
+
+                var nextPresentsToAdd = presentsToAdd.Skip(1).Select(p => (p.Present, p.Copies)).ToList();
+                if (present.Copies > 1)
+                    nextPresentsToAdd.Insert(0, (presentsToAdd[0].Present, presentsToAdd[0].Copies-1));
+
+                if (!nextPresentsToAdd.Any())
+                    return true;
+
+                var nextArea = (bool[,])area.Clone();
+                for (int x = 0; x < 3; x++)
+                    for (int y = 0; y < 3; y++)
+                        if (present.Present[space.Value.Pos][x,y])
+                            nextArea[space.Value.Coords.X+x,space.Value.Coords.Y+y] = true;
+
+                if (CanPresentsFit(nextPresentsToAdd, nextArea))
+                    return true;
+                
+                pos++;
+                if (pos == present.Present.Count)
                 {
-                    var space = FindSpaceForPresent(present.Present, area, offset, pos);
-                    if (space == null)
-                        return false;
-
-                    var nextPresentsToAdd = presentsToAdd.Skip(1).Select(p => (p.Present, p.Copies)).ToList();
-                    if (present.Copies > 1)
-                        nextPresentsToAdd.Insert(0, (presentsToAdd[0].Present, presentsToAdd[0].Copies-1));
-
-                    if (!nextPresentsToAdd.Any())
-                        return true;
-
-                    var nextArea = (bool[,])area.Clone();
-                    for (int x = 0; x < 3; x++)
-                        for (int y = 0; y < 3; y++)
-                            if (present.Present[space.Value.Pos][x,y])
-                                nextArea[space.Value.Coords.X+x,space.Value.Coords.Y+y] = true;
-
-                    if (CanPresentsFit(nextPresentsToAdd, nextArea))
-                        return true;
-                    
-                    pos++;
-                    if (pos == present.Present.Count)
+                    pos = 0;
+                    offset.Y++;
+                    if (offset.Y == area.GetLength(1))
                     {
-                        pos = 0;
-                        offset.Y++;
-                        if (offset.Y == area.GetLength(1))
-                        {
-                            offset.Y = 0;
-                            offset.X++;
-                            if (offset.X == area.GetLength(0))
-                                return false;
-                        }
+                        offset.Y = 0;
+                        offset.X++;
+                        if (offset.X == area.GetLength(0))
+                            return false;
                     }
                 }
             }
